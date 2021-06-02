@@ -1,0 +1,30 @@
+{
+  "name": "goit-nodejs-hw",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js  "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiubovShpakova/goit-nodejs-hw.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LiubovShpakova/goit-nodejs-hw/issues"
+  },
+  "homepage": "https://github.com/LiubovShpakova/goit-nodejs-hw#readme",
+  "devDependencies": {
+    "eslint": "^7.27.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0"
+  }
+}

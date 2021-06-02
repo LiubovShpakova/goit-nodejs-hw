@@ -1,15 +1,16 @@
 module.exports = {
+  parser: '@babel/eslint-parser',
   env: {
     es2021: true,
-    node: true
+    node: true,
   },
-  extends: [
-    'standard'
-  ],
+  extends: ['standard'],
   parserOptions: {
-    ecmaVersion: 12,
-    sourceType: 'module'
+    ecmaVersion: 2021,
+    sourceType: 'module',
   },
   rules: {
-  }
-}
+    'comma-dangle': 'off',
+    'space-before-function-paren': 0,
+  },
+};

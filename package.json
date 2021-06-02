@@ -21,11 +21,18 @@
   },
   "homepage": "https://github.com/LiubovShpakova/goit-nodejs-hw#readme",
   "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-proposal-private-methods": "^7.13.0",
+    "@babel/plugin-syntax-top-level-await": "^7.12.13",
     "eslint": "^7.27.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "@babel/eslint-parser": "^7.14.4"
   }
 }

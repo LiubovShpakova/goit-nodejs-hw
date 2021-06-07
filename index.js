@@ -10,16 +10,16 @@ const {
 function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case 'list':
-      listContacts();
+      listContacts().then((data) => console.table(data));
       break;
     case 'get':
-      getContactById(id);
+      getContactById(id).then((data) => console.table(data));
       break;
     case 'add':
-      addContact(name, email, phone);
+      addContact(name, email, phone).then((data) => console.table(data));
       break;
     case 'remove':
-      removeContact(id);
+      removeContact(id).then((data) => console.table(data));
       break;
     default:
       console.warn('\x1B[31m Unknown action type!');

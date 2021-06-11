@@ -1,6 +1,7 @@
 module.exports = {
   parser: '@babel/eslint-parser',
   env: {
+    commonjs: true,
     es2021: true,
     node: true,
   },
@@ -11,6 +12,6 @@ module.exports = {
   },
   rules: {
     'comma-dangle': 'off',
-    'space-before-function-paren': 0,
+    'space-before-function-paren': 'off',
   },
 };

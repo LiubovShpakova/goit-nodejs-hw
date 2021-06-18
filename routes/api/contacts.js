@@ -7,7 +7,7 @@ const {
   addContact,
   updateContact,
 } = require('../../model');
-const { validatAddContact, validatUpdateContact } = require('./validation');
+const {validatAddContact, validatUpdateContact} = require('./validation');
 router.use((req, res, next) => {
   console.log(req.url);
   next();
@@ -41,7 +41,7 @@ router.get('/:contactId', async (req, res, next) => {
         },
       });
     }
-    return res.json({ status: 'error', code: 404, message: 'Not found' });
+    return res.json({status: 'error', code: 404, message: 'Not found'});
   } catch (e) {
     next(e);
   }

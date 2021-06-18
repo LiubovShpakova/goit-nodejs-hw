@@ -3,15 +3,15 @@ const Joi = require('joi');
 const schemaAddContact = Joi.object({
   name: Joi.string().min(3).max(30).required(),
   email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-    .required(),
+      .email({minDomainSegments: 2, tlds: {allow: ['com', 'net']}})
+      .required(),
   phone: Joi.number().min(5).required(),
 });
 const schemaUpdateContact = Joi.object({
   name: Joi.string().min(3).max(30).optional(),
   email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-    .optional(),
+      .email({minDomainSegments: 2, tlds: {allow: ['com', 'net']}})
+      .optional(),
   phone: Joi.number().min(5).optional(),
 }).or('name', 'email', 'phone');
 

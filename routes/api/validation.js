@@ -4,16 +4,16 @@ const mongoose = require('mongoose');
 const schemaAddContact = Joi.object({
   name: Joi.string().min(3).max(30).required(),
   email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-    .required(),
+      .email({minDomainSegments: 2, tlds: {allow: ['com', 'net']}})
+      .required(),
   phone: Joi.number().min(5).required(),
   favorite: Joi.boolean().optional(),
 });
 const schemaUpdateContact = Joi.object({
   name: Joi.string().min(3).max(30).optional(),
   email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
-    .optional(),
+      .email({minDomainSegments: 2, tlds: {allow: ['com', 'net']}})
+      .optional(),
   phone: Joi.number().min(5).optional(),
   favorite: Joi.boolean().optional(),
 }).or('name', 'email', 'phone', 'favorite');
@@ -46,13 +46,13 @@ module.exports = {
   validatUpdateFavorStatusContact: (req, res, next) => {
     return validate(schemaUpdateFavorStatusContact, req.body, next);
   },
-  // validatContactId: async (req, res, next) => {
-  //   if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
-  //     return next({
-  //       status: 400,
-  //       message: 'Invalid ContactId',
-  //     });
-  //   }
-  //   next();
-  // },
+  validatContactId: async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.contactId)) {
+      return next({
+        status: 400,
+        message: 'Invalid ContactId',
+      });
+    }
+    next();
+  },
 };

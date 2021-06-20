@@ -1,27 +1,63 @@
-## GoIT Node.js Course Template Homework
+# GoIT Node.js Course Template Homework
 
-Выполните форк этого репозитория для выполнения домашних заданий (2-6)
-Форк создаст репозиторий на вашем http://github.com
+## hw-01-cli-app
 
-Добавьте ментора в коллаборацию
+Написание CLI(Command line interface) приложения
 
-Для каждой домашней работы создавайте свою ветку.
+1. Получаем и выводим весь список контактов в виде таблицы (console.table)
+2. Получаем контакт по id
+3. Добавялем контакт
+4. Удаляем контакт
 
-- hw02
-- hw03
-- hw04
-- hw05
-- hw06
+## hw-02-express
 
-Каждая новая ветка для дз должна делаться с master
+REST API для работы с коллекцией контактов, поддерживает следующие рауты:
 
-После того как вы закончили выполнять домашнее задание в своей ветке, необходимо сделать пулл-реквест (PR). Потом добавить ментора для ревью кода. Только после того как ментор заапрувит PR, вы можете выполнить мердж ветки с домашним заданием в мастер.
+1. @ GET /api/contacts
+2. @ GET /api/contacts/:contactId
+3. @ POST /api/contacts
+4. @ DELETE /api/contacts/:contactId
+5. @ PATCH /api/contacts/:contactId
 
-Внимательно читайте комментарии ментора. Исправьте замечания и сделайте коммит в ветке с домашним заданием. Изменения подтянуться в PR автоматически после того как вы отправите коммит с исправлениями на github
-После исправления снова добавьте ментора на ревью кода.
+Для валидации принимаемых данных использован пакет [joi](https://github.com/sideway/joi)
 
-- При сдаче домашней работы есть ссылка на PR
-- JS-код чистый и понятный, для форматирования используется Prettier
+## hw-03-mongodb
+
+REST API для работы с коллекцией контактов.
+Подключение к [MongoDB](https://www.mongodb.com/cloud/atlas) при помощи [Mongoose](https://mongoosejs.com/).
+В функциях обработки запросов применены Mongoose-методы для работы с коллекцией контактов в базе данных.
+Примененна схема модели для коллекции contacts:
+
+```javascript
+{
+      name: {
+        type: String,
+        required: [true, 'Set name for contact'],
+      },
+      email: {
+        type: String,
+      },
+      phone: {
+        type: String,
+      },
+      favorite: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    {versionKey: false, timestamps: true}
+```
+
+Реализовано обновление статуса контакта по маршруту
+
+6. @ PATCH /api/contacts/:contactId/favorite
+
+| Field     | Description                           |
+| --------- | ------------------------------------- |
+| **name**  | The user's unique username. Required. |
+| **email** | The user's unique useremail.          |
+| **phone** | The user's phone.                     |
+| favorite  | The additional user status field.     |
 
 ### Команды:
 

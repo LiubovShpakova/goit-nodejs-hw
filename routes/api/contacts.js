@@ -14,21 +14,23 @@ const {
   validatUpdateFavorStatusContact,
   validatContactId,
 } = require('./validation');
-router.use((req, res, next) => {
-  console.log(req.url);
-  next();
-});
+const guard = require('../../helpers/guard');
+// router.use((req, res, next) => {
+//   console.log(req.url);
+//   next();
+// });
 
-router.get('/', listContactsController);
+router.get('/', guard, listContactsController);
 
-router.get('/:contactId', validatContactId, getContactByIdController);
+router.get('/:contactId', guard, validatContactId, getContactByIdController);
 
-router.post('/', validatAddContact, addContactController);
+router.post('/', guard, validatAddContact, addContactController);
 
-router.delete('/:contactId', removeContactController);
+router.delete('/:contactId', guard, removeContactController);
 
 router.patch(
     '/:contactId',
+    guard,
     validatContactId,
     validatUpdateContact,
     updateContactController
@@ -36,6 +38,7 @@ router.patch(
 
 router.patch(
     '/:contactId/favorite',
+    guard,
     validatContactId,
     validatUpdateFavorStatusContact,
     updateContactFavorController

@@ -1,29 +1,56 @@
 const Contacts = require('./schemas/shemacontact');
 
-const listContacts = async () => {
-  const result = await Contacts.find({});
+const listContacts = async (userId, query) => {
+  const {limit = 5, page = 1, sortBy, sortByDesc, filter} = query;
+  const {
+    docs: contacts,
+    totalDocs: total,
+  } = await Contacts.paginate(
+      {owner: userId},
+      {
+        limit, page,
+        sort: {
+          ...(sortBy ? {[`${sortBy}`]: 1} : {}),
+          ...(sortByDesc ? {[`${sortByDesc}`]: -1} : {})
+        },
+        select: filter ? filter.split('|').join(' ') : '',
+        populate: {path: 'owner', select: 'email subscription -_id'},
+      },
+  );
+  return {contacts, total, limit: +limit, page: +page};
+};
+
+const getContactById = async (userId, id) => {
+  const result = await Contacts.findOne({_id: id, owner: userId}
+  ).populate(
+      {
+        path: 'owner',
+        select: 'email subscription -_id',
+      });
+  return result;
+};
+const removeContact = async (userId, id) => {
+  const result = await Contacts.findByIdAndRemove({_id: id, owner: userId});
   return result;
 };
 
-const getContactById = async (contactId) => {
-  const result = await Contacts.findById(contactId);
+const addContact = async (userId, body) => {
+  const result = await Contacts.create({...body, owner: userId});
   return result;
 };
 
-const removeContact = async (contactId) => {
-  const result = await Contacts.findByIdAndRemove(contactId);
-  return result;
-};
-
-const addContact = async (body) => {
-  const result = await Contacts.create(body);
-  return result;
-};
-
-const updateContact = async (contactId, body) => {
-  const result = await Contacts.findByIdAndUpdate(contactId, body, {
-    new: true,
-  });
+const updateContact = async (userId, id, body) => {
+  const result = await Contacts.findByIdAndUpdate(
+      {
+        _id: id,
+        owner: userId
+      }, {...body}, {
+        new: true,
+      }).populate(
+      {
+        path: 'owner',
+        select: 'email subscription -_id',
+      });
   return result;
 };
 

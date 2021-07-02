@@ -13,7 +13,7 @@ passport.use(
       try {
         // console.log('payload', payload);
         const user = await findById(payload.id);
-        console.log('user', user);
+        // console.log('user🚀', user);
         if (!user) {
           return done(new Error('User not found'));
         }

@@ -30,7 +30,7 @@ const userSchema = new Schema(
           values: SubscriptionValues,
           message: 'It is not allowed',
         },
-        enum: SubscriptionValues,
+        // enum: SubscriptionValues,
         default: 'starter',
       },
       token: {

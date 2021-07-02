@@ -5,6 +5,7 @@ const {
   loginUserController,
   logoutUserController,
   currentUserController,
+  subscriptionUserController,
 } = require('../../controllers/usersController');
 const {
   validatCreateUser,
@@ -23,5 +24,6 @@ router.post('/signup', rateLimit(Limiter), validatCreateUser, signupUserControll
 router.post('/login', validatLoginUser, loginUserController);
 router.post('/logout', logoutUserController);
 router.get('/current', guard, currentUserController);
+router.patch('/subscription', guard, subscriptionUserController);
 
 module.exports = router;

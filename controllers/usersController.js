@@ -1,7 +1,11 @@
-const {findByEmail, create, updateToken} = require('../model/user');
+/* eslint-disable max-len */
+const {findByEmail, create, updateToken, updateSubscUser} = require('../model/user');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+const {Subscription} = require('../helpers/constants');
+
+const SubscriptionValues = Object.values(Subscription);
 
 const signupUserController = async (req, res, next) => {
   try {
@@ -68,7 +72,7 @@ const logoutUserController = async (req, res, next) => {
 
 const currentUserController = async (req, res, next) => {
   try {
-    const {email, subscription} = req.body;
+    const {email, subscription} = req.user;
     return res.status(200).json({
       status: 'success',
       code: 200,
@@ -78,10 +82,32 @@ const currentUserController = async (req, res, next) => {
     next(e);
   }
 };
+const subscriptionUserController = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    if (req.body) {
+      const user = await updateSubscUser(userId, req.body);
 
+      const {email, subscription} = user;
+      const isValidSubsc = SubscriptionValues.some((elem) => elem === subscription);
+      // console.log('subscriptionUserController -> isValidSubsc', isValidSubsc);
+      if (user && isValidSubsc) {
+        return res.status(200).json({
+          status: 'success',
+          code: 200,
+          data: {email, subscription},
+        });
+      }
+      return res.json({status: 'error', code: 404, message: 'Not Found'});
+    }
+  } catch (e) {
+    next(e);
+  }
+};
 module.exports = {
   signupUserController,
   loginUserController,
   logoutUserController,
   currentUserController,
+  subscriptionUserController
 };

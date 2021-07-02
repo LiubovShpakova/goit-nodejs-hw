@@ -68,6 +68,7 @@ REST API для работы с коллекцией контактов.
 2. @ POST /users/login
 3. @ POST /users/logout
 4. @ GET /users/current
+5. @ PATCH /users/subscription
 
 Добавлена пагинация с [mongoose-paginate-v2] {https://www.npmjs.com/package/mongoose-paginate-v2} для коллекции контактов (GET /contacts?page=1&limit=20).
 

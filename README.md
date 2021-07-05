@@ -70,17 +70,18 @@ REST API для работы с коллекцией контактов.
 4. @ GET /users/current
 5. @ PATCH /users/subscription
 
-Добавлена пагинация с [mongoose-paginate-v2] {https://www.npmjs.com/package/mongoose-paginate-v2} для коллекции контактов (GET /contacts?page=1&limit=20).
+Добавлена пагинация с [mongoose-paginate-v2](https://www.npmjs.com/package/mongoose-paginate-v2) для коллекции контактов (GET /contacts?page=1&limit=20).
 
 <h1 align="center"> hw-05-avatars </h1>
 
-Добавлена возможность загрузки аватарки пользователя через [Multer]{https://github.com/expressjs/multer}.
+Добавлена возможность загрузки аватарки пользователя через [Multer](https://github.com/expressjs/multer).
 
-Использован пакет [gravatar]{https://www.npmjs.com/package/gravatar} для того, чтобы при регистрации нового пользователя сразу генерировался ему аватар по его `email`.
+Использован пакет [gravatar](https://www.npmjs.com/package/gravatar) для того, чтобы при регистрации нового пользователя сразу генерировался ему аватар по его `email`.
 
 Для возможности обновления аватарки, создан эндпоинт:
+
 6. @ PATCH /users/avatars
-Аватарка обработана пакетом [jimp]{https://www.npmjs.com/package/jimp}
+Аватарка обработана пакетом [jimp](https://www.npmjs.com/package/jimp)
 
 ### Команды:
 

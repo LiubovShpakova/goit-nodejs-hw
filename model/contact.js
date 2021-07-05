@@ -1,14 +1,16 @@
+/* eslint-disable max-len */
 const Contacts = require('./schemas/shemacontact');
 
 const listContacts = async (userId, query) => {
-  const {limit = 5, page = 1, sortBy, sortByDesc, filter} = query;
+  const {limit = 20, page = 1, totalPages = 1, sortBy, sortByDesc, filter} = query;
   const {
     docs: contacts,
     totalDocs: total,
+    totalPages: Pages,
   } = await Contacts.paginate(
       {owner: userId},
       {
-        limit, page,
+        limit, page, totalPages,
         sort: {
           ...(sortBy ? {[`${sortBy}`]: 1} : {}),
           ...(sortByDesc ? {[`${sortByDesc}`]: -1} : {})
@@ -17,7 +19,7 @@ const listContacts = async (userId, query) => {
         populate: {path: 'owner', select: 'email subscription -_id'},
       },
   );
-  return {contacts, total, limit: +limit, page: +page};
+  return {total, limit: +limit, page: +page, Pages, contacts};
 };
 
 const getContactById = async (userId, id) => {

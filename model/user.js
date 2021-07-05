@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const Users = require('./schemas/shemauser');
 
 const findById = async (id) => {
@@ -19,9 +20,22 @@ const updateToken = async (id, token) => {
   return result;
 };
 
+const updateSubscUser = async (id, body) => {
+  const result = await Users.findByIdAndUpdate(id, {...body}, {new: true});
+  // console.log('updateSubscUser -> result', result);
+  return result;
+};
+const updateAvatar = async (id, avatarURL) => {
+  const result = await Users.updateOne({_id: id}, {avatarURL});
+  // console.log('🚀updateAvatar -> result', result);
+  return result;
+};
+
 module.exports = {
   findById,
   findByEmail,
   create,
   updateToken,
+  updateSubscUser,
+  updateAvatar,
 };

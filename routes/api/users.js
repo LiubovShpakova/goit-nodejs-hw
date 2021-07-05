@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 const express = require('express');
 const router = new express.Router();
 const {
@@ -5,6 +7,8 @@ const {
   loginUserController,
   logoutUserController,
   currentUserController,
+  subscriptionUserController,
+  updateAvatarUserController,
 } = require('../../controllers/usersController');
 const {
   validatCreateUser,
@@ -13,6 +17,7 @@ const {
 const guard = require('../../helpers/guard');
 const rateLimit = require('express-rate-limit');
 const {Limiter} = require('../../helpers/constants');
+const uploadAvatar = require('../../helpers/upload-avatar');
 // router.use((req, res, next) => {
 //   console.log(req.url);
 //   next();
@@ -23,5 +28,7 @@ router.post('/signup', rateLimit(Limiter), validatCreateUser, signupUserControll
 router.post('/login', validatLoginUser, loginUserController);
 router.post('/logout', logoutUserController);
 router.get('/current', guard, currentUserController);
+router.patch('/subscription', guard, subscriptionUserController);
+router.patch('/avatars', guard, uploadAvatar.single('avatar'), updateAvatarUserController);
 
 module.exports = router;

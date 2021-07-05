@@ -15,6 +15,7 @@ const guard = (req, res, next) => {
       });
     }
     req.user = user;
+    // console.log("guard -> user", user);
     // res.locals.user = user переменная на текущем запросе
     // req.app.locals.vars - глобальная переменная
     return next();

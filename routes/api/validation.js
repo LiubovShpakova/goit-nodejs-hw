@@ -42,7 +42,7 @@ const schemaLoginUser = Joi.object({
 
 
 const validate = async (schema, obj, next) => {
-  console.log('Hi valid');
+  // console.log('Hi valid');
   try {
     await schema.validateAsync(obj);
     return next();

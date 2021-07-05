@@ -25,6 +25,11 @@ const updateSubscUser = async (id, body) => {
   // console.log('updateSubscUser -> result', result);
   return result;
 };
+const updateAvatar = async (id, avatarURL) => {
+  const result = await Users.updateOne({_id: id}, {avatarURL});
+  // console.log('🚀updateAvatar -> result', result);
+  return result;
+};
 
 module.exports = {
   findById,
@@ -32,4 +37,5 @@ module.exports = {
   create,
   updateToken,
   updateSubscUser,
+  updateAvatar,
 };

@@ -27,11 +27,12 @@ class EmailService {
         name: 'LSCompany',
         link: this.link,
         // Optional product logo
-        // logo: '../public/logo/shortcut.png',
+        logo: 'https://static.cdn.entryscape.com/assets/entryscape.png',
       },
     });
     const email = {
       body: {
+        name: 'Friend',
         intro:
           'Welcome to LSCompany! We\'re very excited to have you on board.',
         action: {
@@ -39,7 +40,7 @@ class EmailService {
           button: {
             color: '#29bac2', // Optional action button color
             text: 'Verify your account',
-            link: `${this.link}/api/users/verify/${verifyToken}`,
+            link: `${this.link}/api/users/auth/verify/${verifyToken}`,
           },
         },
       },

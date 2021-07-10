@@ -28,7 +28,7 @@ const signupUserController = async (req, res, next) => {
     const {id, email, subscription, avatarURL, verifyToken} = newUser;
     try {
       const emailService = new EmailService(process.env.NODE_ENV, new CreateSenderNodemailer());
-      console.log('signupUserController -> emailService', emailService);
+      // console.log('signupUserController -> emailService', emailService);
       await emailService.sendVerifyEmail(verifyToken, email);
     } catch (e) {
       console.log(e.message);
@@ -69,7 +69,6 @@ const loginUserController = async (req, res, next) => {
         email,
         subscription,
         avatarURL: user.avatarURL,
-        verifyToken
       },
     }});
   } catch (e) {
@@ -162,8 +161,8 @@ const saveAvatarUser = async (req) => {
 
 const verifyTokenUserController = async (req, res, next) => {
   try {
-    const result = await findByVerifyToken(req.params.verificationToken);
-    if (result) {
+    const user = await findByVerifyToken(req.params.verificationToken);
+    if (user) {
       await updateVerifyToken(user.id, true, null);
       return res.json({
         status: 'success',
@@ -184,20 +183,22 @@ const verifyRepeatUserController = async (req, res, next) => {
   try {
     const user = await findByEmail(req.body.email);
     if (user) {
-      const {email, verifyToken} = user;
-      const emailService = new EmailService(process.env.NODE_ENV, new CreateSenderNodemailer());
-      await emailService.sendVerifyEmail(verifyToken, email);
+      const {email, verify, verifyToken} = user;
+      if (!verify) {
+        const emailService = new EmailService(process.env.NODE_ENV, new CreateSenderNodemailer());
+        await emailService.sendVerifyEmail(verifyToken, email);
+        return res.json({
+          status: 'success',
+          code: 200,
+          message: 'Verification email sent',
+        });
+      }
       return res.json({
-        status: 'success',
-        code: 200,
-        message: 'Verification email sent',
+        status: 'error',
+        code: 400,
+        message: 'Verification has already been passed'
       });
     }
-    return res.json({
-      status: 'error',
-      code: 400,
-      message: 'Verification has already been passed'
-    });
   } catch (e) {
     next(e);
   }

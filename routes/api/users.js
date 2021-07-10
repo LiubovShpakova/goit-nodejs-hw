@@ -32,7 +32,7 @@ router.post('/logout', logoutUserController);
 router.get('/current', guard, currentUserController);
 router.patch('/subscription', guard, subscriptionUserController);
 router.patch('/avatars', guard, uploadAvatar.single('avatar'), updateAvatarUserController);
-router.get('/auth/verify/:verificationToken', guard, verifyTokenUserController);
-router.post('/verify', guard, verifyRepeatUserController);
+router.get('/auth/verify/:verificationToken', verifyTokenUserController);
+router.post('/verify', verifyRepeatUserController);
 
 module.exports = router;

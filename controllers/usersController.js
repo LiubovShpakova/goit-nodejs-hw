@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
-const {findByEmail, create, updateToken, updateSubscUser, updateAvatar} = require('../model/user');
+const {findByEmail, findByVerifyToken, create, updateToken, updateSubscUser, updateAvatar, updateVerifyToken} = require('../model/user');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const jimp = require('jimp');
 const fs = require('fs/promises');
 const path = require('path');
+const EmailService = require('../services/email');
+const {CreateSenderNodemailer} = require('../services/email-sender');
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const FOLDER_AVATARS = process.env.FOLDER_AVATARS;
 const {Subscription} = require('../helpers/constants');
@@ -19,10 +21,18 @@ const signupUserController = async (req, res, next) => {
       return res.status(409).json({
         status: 'error',
         code: 409,
-        message: 'Email in use',
+        message: 'Email is already used',
       });
     }
     const newUser = await create(req.body);
+    const {id, email, subscription, avatarURL, verifyToken} = newUser;
+    try {
+      const emailService = new EmailService(process.env.NODE_ENV, new CreateSenderNodemailer());
+      // console.log('signupUserController -> emailService', emailService);
+      await emailService.sendVerifyEmail(verifyToken, email);
+    } catch (e) {
+      console.log(e.message);
+    }
     return res.status(200).json({
       status: 'success',
       code: 200,
@@ -40,13 +50,13 @@ const loginUserController = async (req, res, next) => {
   try {
     const {email, password, subscription = 'starter', avatarURL} = req.body;
     const user = await findByEmail(email);
-    console.log('loginUserController -> user', user);
+    // console.log('loginUserController -> user', user);
     const isValidPassword = await user?.isValidPassword(password);
-    if (!user || !isValidPassword) {
+    if (!user || !isValidPassword || !user.verify) {
       return res.json({
         status: 'error',
         code: 401,
-        message: 'Email or password is wrong',
+        message: 'Email or password is wrong or unauthorized',
       });
     }
     const id = user.id;
@@ -149,11 +159,58 @@ const saveAvatarUser = async (req) => {
   return path.join(FOLDER_AVATARS, newNameAvatar).replace('\\', '/');
 };
 
+const verifyTokenUserController = async (req, res, next) => {
+  try {
+    const user = await findByVerifyToken(req.params.verificationToken);
+    if (user) {
+      await updateVerifyToken(user.id, true, null);
+      return res.json({
+        status: 'success',
+        code: 200,
+        message: 'Verification successful',
+      });
+    }
+    return res.json({
+      status: 'error',
+      code: 404,
+      message: 'User not found'
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+const verifyRepeatUserController = async (req, res, next) => {
+  try {
+    const user = await findByEmail(req.body.email);
+    if (user) {
+      const {email, verify, verifyToken} = user;
+      if (!verify) {
+        const emailService = new EmailService(process.env.NODE_ENV, new CreateSenderNodemailer());
+        await emailService.sendVerifyEmail(verifyToken, email);
+        return res.json({
+          status: 'success',
+          code: 200,
+          message: 'Verification email sent',
+        });
+      }
+      return res.json({
+        status: 'error',
+        code: 400,
+        message: 'Verification has already been passed'
+      });
+    }
+  } catch (e) {
+    next(e);
+  }
+};
+
 module.exports = {
   signupUserController,
   loginUserController,
   logoutUserController,
   currentUserController,
   subscriptionUserController,
-  updateAvatarUserController
+  updateAvatarUserController,
+  verifyTokenUserController,
+  verifyRepeatUserController,
 };

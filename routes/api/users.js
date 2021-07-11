@@ -9,6 +9,8 @@ const {
   currentUserController,
   subscriptionUserController,
   updateAvatarUserController,
+  verifyTokenUserController,
+  verifyRepeatUserController,
 } = require('../../controllers/usersController');
 const {
   validatCreateUser,
@@ -30,5 +32,7 @@ router.post('/logout', logoutUserController);
 router.get('/current', guard, currentUserController);
 router.patch('/subscription', guard, subscriptionUserController);
 router.patch('/avatars', guard, uploadAvatar.single('avatar'), updateAvatarUserController);
+router.get('/auth/verify/:verificationToken', verifyTokenUserController);
+router.post('/verify', verifyRepeatUserController);
 
 module.exports = router;

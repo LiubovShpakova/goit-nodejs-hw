@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const {Schema, model} = mongoose;
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+// const {v4: uuidv4} = require('uuid');
+const {nanoid} = require('nanoid');
 const SALT_FACTOR = 6;
 const {Subscription} = require('../../helpers/constants');
 
@@ -31,7 +33,6 @@ const userSchema = new Schema(
           values: SubscriptionValues,
           message: 'It is not allowed',
         },
-        // enum: SubscriptionValues,
         default: 'starter',
       },
       token: {
@@ -43,6 +44,15 @@ const userSchema = new Schema(
         default: function() {
           return gravatar.url(this.email, {s: '250'}, true);
         },
+      },
+      verify: {
+        type: Boolean,
+        default: false,
+      },
+      verifyToken: {
+        type: String,
+        required: [true, 'Verify token is required'],
+        default: nanoid(),
       },
     },
     {versionKey: false, timestamps: true},
